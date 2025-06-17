@@ -54,18 +54,18 @@ with st.sidebar:
     st.header("💰 Mcube")
     
     # API Key input
-    try:
-        api_key = st.secrets["GEMINI_API_KEY"]
-        genai.configure(api_key=api_key)
-    
-    except KeyError:
-        st.error("🔑 **GEMINI_API_KEY not found in secrets.**")
-        st.error("Please check that you've added the API key to Streamlit Cloud secrets with the exact name 'GEMINI_API_KEY'")
-        st.info("Go to: Streamlit Cloud Dashboard → Your App → Manage App → Secrets")
-        st.stop()
-    except Exception as e:
-        st.error(f"❌ Error configuring Gemini API: {str(e)}")
-        st.stop()
+    if "GEMINI_API_KEY" in st.secrets:
+        genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+        st.session_state.api_key_set = True
+    else:
+        api_key = st.text_input(
+            "Enter your Gemini API Key:",
+            type="password",
+            help="Get your free API key from https://makersuite.google.com/app/apikey"
+        )
+        if api_key:
+            genai.configure(api_key=api_key)
+            st.session_state.api_key_set = True
     
     st.divider()
     
