@@ -54,8 +54,18 @@ with st.sidebar:
     st.header("💰 Mcube")
     
     # API Key input
-    api_key = st.secrets["GEMINI_API_KEY"]
-    st.session_state.api_key_set = True
+    if "GEMINI_API_KEY" in st.secrets:
+        genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+        st.session_state.api_key_set = True
+    else:
+        api_key = st.text_input(
+            "Enter your Gemini API Key:",
+            type="password",
+            help="Get your free API key from https://makersuite.google.com/app/apikey"
+        )
+        if api_key:
+            genai.configure(api_key=api_key)
+            st.session_state.api_key_set = True
     
     st.divider()
     
