@@ -72,22 +72,11 @@ with st.sidebar:
     # Model settings
     model_name = "gemini-1.5-flash"
     temperature = 0.7
-    
-    st.divider()
-    
-    # Clear chat button
-    if st.button("🗑️ Clear Chat"):
-        st.session_state.messages = []
-        st.rerun()
-    
-    st.divider()
-    
+       
     # Instructions
     st.header("📋 How to Use")
     st.markdown("""
-    1. **Get API Key**: Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
-    2. **Enter Key**: Paste it in the field above
-    3. **Start Chatting**: Ask any personal finance question!
+    **Start Chatting**: Ask any personal finance question!
     
     **Example Questions:**
     - How should I plan my retirement?
@@ -96,6 +85,14 @@ with st.sidebar:
     - Should I pay off debt or invest?
     """)
 
+    st.divider()
+    
+    # Clear chat button
+    if st.button("🗑️ Clear Chat"):
+        st.session_state.messages = []
+        st.rerun()
+    
+    
 # Main header
 st.markdown("""
 <div class="main-header">
