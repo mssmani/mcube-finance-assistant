@@ -114,9 +114,9 @@ with st.sidebar:
 # Main header
 st.markdown("""
 <div class="main-header">
-    <h1>💰 Mcube</h1>
+    <h1>💰 Mcube - Make Money with Mani</h1>
     <h3>Your Personal Finance Guide</h3>
-    <p>Expert advice on investments, savings, insurance, and financial planning</p>
+    <p>Friendly advice on investments, savings, insurance, and financial planning</p>
 </div>
 """, unsafe_allow_html=True)
 
