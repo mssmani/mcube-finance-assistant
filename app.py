@@ -51,7 +51,7 @@ if "api_key_set" not in st.session_state:
 
 # Sidebar for API key and settings
 with st.sidebar:
-    st.header("🔑 Setup")
+    st.header("💰 Mcube")
     
     # API Key input
     if "GEMINI_API_KEY" in st.secrets:
@@ -69,32 +69,6 @@ with st.sidebar:
     
     st.divider()
     
-    # Model settings
-    st.header("⚙️ Settings")
-    model_name = st.selectbox(
-        "Model:",
-        ["gemini-1.5-flash", "gemini-1.5-pro"],
-        help="Flash is faster, Pro is more capable"
-    )
-    
-    temperature = st.slider(
-        "Creativity Level:",
-        min_value=0.0,
-        max_value=1.0,
-        value=0.7,
-        step=0.1,
-        help="Higher values make responses more creative"
-    )
-    
-    st.divider()
-    
-    # Clear chat button
-    if st.button("🗑️ Clear Chat"):
-        st.session_state.messages = []
-        st.rerun()
-    
-    st.divider()
-    
     # Instructions
     st.header("📋 How to Use")
     st.markdown("""
@@ -109,6 +83,13 @@ with st.sidebar:
     - Should I pay off debt or invest?
     """)
 
+    st.divider()
+    
+    # Clear chat button
+    if st.button("🗑️ Clear Chat"):
+        st.session_state.messages = []
+        st.rerun()
+        
 # Main header
 st.markdown("""
 <div class="main-header">
