@@ -54,7 +54,7 @@ with st.sidebar:
     st.header("💰 Mcube")
     
     # API Key input
-    if "GEMINI_API_KEY" in st.secrets:
+   if "GEMINI_API_KEY" in st.secrets:
         genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
         st.session_state.api_key_set = True
     else:
