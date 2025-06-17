@@ -70,21 +70,8 @@ with st.sidebar:
     st.divider()
     
     # Model settings
-    st.header("⚙️ Settings")
-    model_name = st.selectbox(
-        "Model:",
-        ["gemini-1.5-flash", "gemini-1.5-pro"],
-        help="Flash is faster, Pro is more capable"
-    )
-    
-    temperature = st.slider(
-        "Creativity Level:",
-        min_value=0.0,
-        max_value=1.0,
-        value=0.7,
-        step=0.1,
-        help="Higher values make responses more creative"
-    )
+    model_name = "gemini-1.5-flash"
+    temperature = 0.7
     
     st.divider()
     
