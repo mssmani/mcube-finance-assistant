@@ -209,6 +209,6 @@ st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #666; padding: 1rem;">
     <p>💡 <strong>Disclaimer:</strong> This is for educational purposes. Always consult with qualified financial advisors for major decisions.</p>
-    <p>Built with ❤️ using Streamlit</p>
+    <p>Built with Streamlit</p>
 </div>
 """, unsafe_allow_html=True)
