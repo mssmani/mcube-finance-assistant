@@ -89,7 +89,11 @@ with st.sidebar:
     if st.button("🗑️ Clear Chat"):
         st.session_state.messages = []
         st.rerun()
-        
+
+# Default model settings
+model_name = "gemini-1.5-flash"
+temperature = 0.7
+
 # Main header
 st.markdown("""
 <div class="main-header">
