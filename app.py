@@ -54,18 +54,18 @@ with st.sidebar:
     st.header("💰 Mcube")
     
 # API Key input
-try:
-    api_key = st.secrets["GEMINI_API_KEY"]
-except KeyError:
-     st.error("Gemini API key not found in Streamlit secrets")
-     api_key = st.text_input(
+if "GEMINI_API_KEY" in st.secrets:
+        genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+        st.session_state.api_key_set = True
+    else:
+        api_key = st.text_input(
             "Enter your Gemini API Key:",
             type="password",
             help="Get your free API key from https://makersuite.google.com/app/apikey"
         )
-
-# Configure the generative AI model with your API key
-genai.configure(api_key=api_key)
+        if api_key:
+            genai.configure(api_key=api_key)
+            st.session_state.api_key_set = True
     
 st.divider()
     
