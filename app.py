@@ -57,6 +57,7 @@ with st.sidebar:
 try:
     api_key = st.secrets["GEMINI_API_KEY"]
 except KeyError:
+     st.error("Gemini API key not found in Streamlit secrets)
      api_key = st.text_input(
             "Enter your Gemini API Key:",
             type="password",
