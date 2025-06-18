@@ -54,15 +54,7 @@ with st.sidebar:
     st.header("💰 Mcube")
     
     # API Key input
-    try:
-        api_key = st.secrets["GEMINI_API_KEY"]
-        genai.configure(api_key=api_key)
-    except KeyError:
-        st.error("🔑 Gemini API key not found in secrets. Please contact the app administrator.")
-        st.stop()
-    except Exception as e:
-        st.error(f"❌ Error configuring Gemini API: {str(e)}")
-        st.stop()
+    genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
     
     st.divider()
     
