@@ -62,24 +62,24 @@ st.divider()
 model_name = "gemini-1.5-flash"
 temperature = 0.7
        
-    # Instructions
-    st.header("📋 How to Use")
-    st.markdown("""
-    **Start Chatting**: Ask any personal finance question!
+# Instructions
+st.header("📋 How to Use")
+st.markdown("""
+**Start Chatting**: Ask any personal finance question!
     
-    **Example Questions:**
-    - How should I plan my retirement?
-    - What's the best investment strategy for beginners?
-    - How to create an emergency fund?
-    - Should I pay off debt or invest?
-    """)
+**Example Questions:**
+- How should I plan my retirement?
+- What's the best investment strategy for beginners?
+- How to create an emergency fund?
+- Should I pay off debt or invest?
+""")
 
 st.divider()
     
-    # Clear chat button
-    if st.button("🗑️ Clear Chat"):
-        st.session_state.messages = []
-        st.rerun()
+# Clear chat button
+if st.button("🗑️ Clear Chat"):
+    st.session_state.messages = []
+    st.rerun()
     
     
 # Main header
