@@ -53,44 +53,44 @@ if "api_key_set" not in st.session_state:
 with st.sidebar:
     st.header("💰 Mcube")
     
-# API Key input
-if "GEMINI_API_KEY" in st.secrets:
+    # API Key input
+    if "GEMINI_API_KEY" in st.secrets:
         genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
         st.session_state.api_key_set = True
-else:
-    api_key = st.text_input(
-        "Enter your Gemini API Key:",
-        type="password",
-        help="Get your free API key from https://makersuite.google.com/app/apikey"
-    )
-    if api_key:
-        genai.configure(api_key=api_key)
-        st.session_state.api_key_set = True
+    else:
+        api_key = st.text_input(
+            "Enter your Gemini API Key:",
+            type="password",
+            help="Get your free API key from https://makersuite.google.com/app/apikey"
+        )
+        if api_key:
+            genai.configure(api_key=api_key)
+            st.session_state.api_key_set = True
     
-st.divider()
+    st.divider()
     
-# Model settings
-model_name = "gemini-1.5-flash"
-temperature = 0.7
+    # Model settings
+    model_name = "gemini-1.5-flash"
+    temperature = 0.7
        
-# Instructions
-st.header("📋 How to Use")
-st.markdown("""
-**Start Chatting**: Ask any personal finance question!
+    # Instructions
+    st.header("📋 How to Use")
+    st.markdown("""
+    **Start Chatting**: Ask any personal finance question!
     
-**Example Questions:**
-- How should I plan my retirement?
-- What's the best investment strategy for beginners?
-- How to create an emergency fund?
-- Should I pay off debt or invest?
-""")
+    **Example Questions:**
+    - How should I plan my retirement?
+    - What's the best investment strategy for beginners?
+    - How to create an emergency fund?
+    - Should I pay off debt or invest?
+    """)
 
-st.divider()
+    st.divider()
     
-# Clear chat button
-if st.button("🗑️ Clear Chat"):
-    st.session_state.messages = []
-    st.rerun()
+    # Clear chat button
+    if st.button("🗑️ Clear Chat"):
+        st.session_state.messages = []
+        st.rerun()
     
     
 # Main header
