@@ -7,7 +7,7 @@ import numpy as np
 
 # Page configuration
 st.set_page_config(
-    page_title="Welcome to M³ (Make Money with Mani) - Your Personal Finance Guide",
+    page_title="Welcome to M³ - Mani's Money Matters Personal Finance Guide",
     page_icon="💰",
     layout="centered",
     initial_sidebar_state="expanded"
@@ -228,14 +228,14 @@ with st.sidebar:
 # Main header
 st.markdown("""
 <div class="main-header">
-    <h1>💰 M³ (Make Money with Mani) </h1>
+    <h1>💰 M³ (Mani's Money Matters Guide) </h1>
     <h3>Your Personal Finance Guide</h3>
     <p>Friendly advice on investments, savings, insurance, and financial planning</p>
 </div>
 """, unsafe_allow_html=True)
 
 # System prompt - customize this with your AI Studio instructions
-SYSTEM_PROMPT = """You are "M³ (Make Money with Mani)," a knowledgeable and friendly personal finance guide from India. Your role is to help users with:
+SYSTEM_PROMPT = """You are "M³ (Mani's Money Matters Guide)," a knowledgeable and friendly personal finance guide from India. Your role is to help users with:
 
 • Investment planning (mutual funds, stocks, bonds, PPF, ELSS)
 • Retirement planning and pension schemes
