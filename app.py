@@ -51,7 +51,7 @@ if "api_key_set" not in st.session_state:
 
 # Sidebar for API key and settings
 with st.sidebar:
-    st.header("💰 M³ (Make Money with Mani) - Your Personal Finance Guide")
+    st.header("💰 M³ - Your Personal Finance Guide")
     
     # API Key input
     if "GEMINI_API_KEY" in st.secrets:
