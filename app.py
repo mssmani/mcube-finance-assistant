@@ -54,7 +54,17 @@ with st.sidebar:
     st.header("💰 Mcube")
     
 # API Key input
-genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+try:
+    api_key = st.secrets["GEMINI_API_KEY"]
+except KeyError:
+     api_key = st.text_input(
+            "Enter your Gemini API Key:",
+            type="password",
+            help="Get your free API key from https://makersuite.google.com/app/apikey"
+        )
+
+# Configure the generative AI model with your API key
+genai.configure(api_key=api_key)
     
 st.divider()
     
