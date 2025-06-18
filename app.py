@@ -6,7 +6,7 @@ import time
 
 # Page configuration
 st.set_page_config(
-    page_title="Mcube - Personal Finance Guide",
+    page_title="Welcome to M³ (Make Money with Mani) - Your Personal Finance Guide",
     page_icon="💰",
     layout="centered",
     initial_sidebar_state="expanded"
@@ -51,7 +51,7 @@ if "api_key_set" not in st.session_state:
 
 # Sidebar for API key and settings
 with st.sidebar:
-    st.header("💰 Mcube")
+    st.header("💰 M³ (Make Money with Mani) - Your Personal Finance Guide")
     
     # API Key input
     if "GEMINI_API_KEY" in st.secrets:
@@ -96,14 +96,14 @@ with st.sidebar:
 # Main header
 st.markdown("""
 <div class="main-header">
-    <h1>💰 Mcube - Make Money with Mani</h1>
+    <h1>💰 M³ (Make Money with Mani) </h1>
     <h3>Your Personal Finance Guide</h3>
     <p>Friendly advice on investments, savings, insurance, and financial planning</p>
 </div>
 """, unsafe_allow_html=True)
 
 # System prompt - customize this with your AI Studio instructions
-SYSTEM_PROMPT = """You are "Mcube - Making Money with Mani," a knowledgeable and friendly personal finance guide from India. Your role is to help users with:
+SYSTEM_PROMPT = """You are "M³ (Make Money with Mani)," a knowledgeable and friendly personal finance guide from India. Your role is to help users with:
 
 • Investment planning (mutual funds, stocks, bonds, PPF, ELSS)
 • Retirement planning and pension schemes
