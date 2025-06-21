@@ -57,6 +57,36 @@ if "messages" not in st.session_state:
 if "api_key_set" not in st.session_state:
     st.session_state.api_key_set = False
 
+# Helper functions for calculations
+def calculate_cagr(initial_value, final_value, years):
+    return (((final_value / initial_value) ** (1 / years)) - 1) * 100
+
+def calculate_emi(principal, annual_rate, tenure_months):
+    monthly_rate = annual_rate / (12 * 100)
+    emi = principal * (monthly_rate * (1 + monthly_rate)**tenure_months) / ((1 + monthly_rate)**tenure_months - 1)
+    return emi
+
+def calculate_sip_maturity(monthly_sip, expected_return, investment_years):
+    monthly_rate = expected_return / (12 * 100)
+    total_months = investment_years * 12
+    maturity_amount = monthly_sip * (((1 + monthly_rate)**total_months - 1) / monthly_rate) * (1 + monthly_rate)
+    total_invested = monthly_sip * total_months
+    return maturity_amount, total_invested
+
+def calculate_fd_maturity(principal, rate, years, compound_freq):
+    return principal * (1 + (rate/100)/compound_freq)**(compound_freq * years)
+
+def calculate_retirement_corpus(current_age, retirement_age, monthly_expenses, inflation_rate):
+    years_to_retirement = retirement_age - current_age
+    annual_expenses = monthly_expenses * 12
+    future_annual_expenses = annual_expenses * ((1 + inflation_rate/100) ** years_to_retirement)
+    # Assuming 25 years post retirement and 4% real return
+    required_corpus = future_annual_expenses * 25
+    return required_corpus
+
+def calculate_lumpsum_growth(principal, rate, years):
+    return principal * (1 + rate/100)**years
+
 # Sidebar for API key and settings
 with st.sidebar:
     st.header("💰 M³ - Your Personal Finance Guide")
@@ -77,6 +107,31 @@ with st.sidebar:
     
     st.divider()
     
+    # Model settings
+    model_name = "gemini-1.5-flash"
+    temperature = 0.7
+       
+    # Instructions
+    st.header("📋 How to Use")
+    st.markdown("""
+    **Financial Calculators**: Use the calculators above for quick calculations!
+    
+    **Chat with M³**: Ask any personal finance question!
+    
+    **Example Questions:**
+    - How should I plan my retirement?
+    - What's the best investment strategy for beginners?
+    - How to create an emergency fund?
+    - Should I pay off debt or invest?
+    """)
+
+    st.divider()
+    
+    # Clear chat button
+    if st.button("🗑️ Clear Chat"):
+        st.session_state.messages = []
+        st.rerun()
+
 # FINANCIAL CALCULATORS SECTION
 st.header("🧮 Financial Calculators")
 
@@ -84,7 +139,7 @@ st.header("🧮 Financial Calculators")
 calculator_type = st.selectbox(
     "Choose Calculator:",
     ["Select Calculator", "CAGR Calculator", "Compound Interest", "EMI Calculator", "FD Calculator",  
-     "Lumpsum Growth","Retirement Planning", "SIP Calculator"]
+     "Lumpsum Growth", "Retirement Planning", "SIP Calculator"]
 )
 
 if calculator_type == "CAGR Calculator":
@@ -211,35 +266,9 @@ elif calculator_type == "Compound Interest":
             Interest Earned: ₹{interest:,.0f}
         </div>
         """, unsafe_allow_html=True)
-    
-    st.divider()
-    
-    # Model settings
-    model_name = "gemini-1.5-flash"
-    temperature = 0.7
-       
-    # Instructions
-    st.header("📋 How to Use")
-    st.markdown("""
-    **Financial Calculators**: Use the calculators above for quick calculations!
-    
-    **Chat with M³**: Ask any personal finance question!
-    
-    **Example Questions:**
-    - How should I plan my retirement?
-    - What's the best investment strategy for beginners?
-    - How to create an emergency fund?
-    - Should I pay off debt or invest?
-    """)
 
-    st.divider()
-    
-    # Clear chat button
-    if st.button("🗑️ Clear Chat"):
-        st.session_state.messages = []
-        st.rerun()
-    
-    
+st.divider()
+
 # Main header
 st.markdown("""
 <div class="main-header">
