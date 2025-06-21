@@ -110,6 +110,26 @@ with st.sidebar:
     # Model settings
     model_name = "gemini-1.5-flash"
     temperature = 0.7
+       
+    # Instructions
+    st.header("📋 How to Use")
+    st.markdown("""
+    **Chat with M³**: Ask any personal finance question!
+    
+    **Example Questions:**
+    - How should I plan my retirement?
+    - What's the best investment strategy for beginners?
+    - How to create an emergency fund?
+    - Should I pay off debt or invest?
+    """)
+    
+    st.divider()
+    
+    st.markdown("""
+    **Financial Calculators**: Use the calculators below for quick calculations!
+    """)
+    
+    st.divider()
     
     # FINANCIAL CALCULATORS SECTION - MOVED TO SIDEBAR
     st.header("🧮 Financial Calculators")
@@ -245,26 +265,6 @@ with st.sidebar:
                 Interest Earned: ₹{interest:,.0f}
             </div>
             """, unsafe_allow_html=True)
-
-    st.divider()
-       
-    # Instructions
-    st.header("📋 How to Use")
-    st.markdown("""
-    **Chat with M³**: Ask any personal finance question!
-    
-    **Example Questions:**
-    - How should I plan my retirement?
-    - What's the best investment strategy for beginners?
-    - How to create an emergency fund?
-    - Should I pay off debt or invest?
-    """)
-    
-    st.divider()
-    
-    st.markdown("""
-    **Financial Calculators**: Use the calculators above for quick calculations!
-    """)
 
     st.divider()
     
