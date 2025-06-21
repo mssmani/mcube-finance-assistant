@@ -110,12 +110,147 @@ with st.sidebar:
     # Model settings
     model_name = "gemini-1.5-flash"
     temperature = 0.7
+    
+    # FINANCIAL CALCULATORS SECTION - MOVED TO SIDEBAR
+    st.header("🧮 Financial Calculators")
+
+    # Calculator selection
+    calculator_type = st.selectbox(
+        "Choose Calculator:",
+        ["Select Calculator", "CAGR Calculator", "Compound Interest", "EMI Calculator", "FD Calculator",  
+         "Lumpsum Growth", "Retirement Planning", "SIP Calculator"]
+    )
+
+    if calculator_type == "CAGR Calculator":
+        st.subheader("📈 CAGR Calculator")
+        initial_value = st.number_input("Initial Investment (₹)", min_value=1.0, value=100000.0, step=1000.0)
+        final_value = st.number_input("Final Value (₹)", min_value=1.0, value=200000.0, step=1000.0)
+        years = st.number_input("Investment Period (Years)", min_value=0.1, value=5.0, step=0.1)
+        
+        if st.button("Calculate CAGR", type="primary"):
+            cagr = calculate_cagr(initial_value, final_value, years)
+            total_return = ((final_value - initial_value) / initial_value) * 100
+            
+            st.success(f"**CAGR: {cagr:.2f}% per annum**")
+            st.info(f"Total Return: {total_return:.2f}%")
+            st.info(f"Absolute Gain: ₹{final_value - initial_value:,.2f}")
+
+    # EMI Calculator
+    elif calculator_type == "EMI Calculator":
+        st.subheader("🏠 EMI Calculator")
+        principal = st.number_input("Loan Amount (₹)", min_value=1.0, value=1000000.0, step=10000.0)
+        annual_rate = st.number_input("Interest Rate (% per annum)", min_value=0.1, value=8.5, step=0.1)
+        tenure_years = st.number_input("Loan Tenure (Years)", min_value=1, value=20, step=1)
+        
+        if st.button("Calculate EMI", type="primary"):
+            tenure_months = tenure_years * 12
+            emi = calculate_emi(principal, annual_rate, tenure_months)
+            total_payment = emi * tenure_months
+            total_interest = total_payment - principal
+            
+            st.success(f"**Monthly EMI: ₹{emi:,.2f}**")
+            st.info(f"Total Payment: ₹{total_payment:,.2f}")
+            st.info(f"Total Interest: ₹{total_interest:,.2f}")
+            st.info(f"Principal: ₹{principal:,.2f}")
+
+    # SIP Calculator
+    elif calculator_type == "SIP Calculator":
+        st.subheader("📊 SIP Calculator")
+        monthly_sip = st.number_input("Monthly SIP (₹)", min_value=1.0, value=10000.0, step=500.0)
+        expected_return = st.number_input("Expected Annual Return (%)", min_value=1.0, value=12.0, step=0.5)
+        investment_years = st.number_input("Investment Period (Years)", min_value=1, value=10, step=1)
+        
+        if st.button("Calculate SIP Maturity", type="primary"):
+            maturity_amount, total_invested = calculate_sip_maturity(monthly_sip, expected_return, investment_years)
+            total_gains = maturity_amount - total_invested
+            
+            st.success(f"**Maturity Amount: ₹{maturity_amount:,.2f}**")
+            st.info(f"Total Invested: ₹{total_invested:,.2f}")
+            st.info(f"Total Gains: ₹{total_gains:,.2f}")
+            st.info(f"Return Multiple: {maturity_amount/total_invested:.2f}x")
+
+    # Fixed Deposit Calculator
+    elif calculator_type == "FD Calculator":
+        st.subheader("🏦 FD Calculator")
+        fd_principal = st.number_input("Principal Amount (₹)", min_value=1.0, value=100000.0, step=1000.0)
+        fd_rate = st.number_input("Interest Rate (% per annum)", min_value=0.1, value=6.5, step=0.1)
+        fd_years = st.number_input("Investment Period (Years)", min_value=0.1, value=5.0, step=0.1)
+        compound_freq = st.selectbox("Compounding Frequency", [1, 2, 4, 12], index=2, 
+                                   format_func=lambda x: {1: "Annually", 2: "Half-yearly", 4: "Quarterly", 12: "Monthly"}[x])
+        
+        if st.button("Calculate FD Maturity", type="primary"):
+            maturity_amount = calculate_fd_maturity(fd_principal, fd_rate, fd_years, compound_freq)
+            interest_earned = maturity_amount - fd_principal
+            
+            st.success(f"**Maturity Amount: ₹{maturity_amount:,.2f}**")
+            st.info(f"Interest Earned: ₹{interest_earned:,.2f}")
+            st.info(f"Effective Return: {(interest_earned/fd_principal)*100:.2f}%")
+
+    # Retirement Planning Calculator
+    elif calculator_type == "Retirement Planning":
+        st.subheader("🏖️ Retirement Planning")
+        current_age = st.number_input("Current Age", min_value=18, max_value=60, value=30)
+        retirement_age = st.number_input("Retirement Age", min_value=current_age+1, max_value=70, value=60)
+        monthly_expenses = st.number_input("Current Monthly Expenses (₹)", min_value=1000.0, value=50000.0, step=1000.0)
+        inflation_rate = st.number_input("Expected Inflation Rate (%)", min_value=1.0, value=6.0, step=0.5)
+        
+        if st.button("Calculate Retirement Corpus", type="primary"):
+            required_corpus = calculate_retirement_corpus(current_age, retirement_age, monthly_expenses, inflation_rate)
+            years_to_retirement = retirement_age - current_age
+            
+            # Calculate required monthly SIP
+            if years_to_retirement > 0:
+                # Assuming 12% annual return
+                monthly_sip_needed = required_corpus / (((1.01**((years_to_retirement)*12) - 1) / 0.01) * 1.01)
+                
+                st.success(f"**Required Retirement Corpus: ₹{required_corpus:,.0f}**")
+                st.info(f"Years to Retirement: {years_to_retirement}")
+                st.info(f"Monthly SIP needed (12% return): ₹{monthly_sip_needed:,.0f}")
+                st.warning("💡 Start investing early to reduce monthly burden!")
+
+    # Lumpsum Growth Calculator
+    elif calculator_type == "Lumpsum Growth":
+        st.subheader("💎 Lumpsum Investment")
+        lump_principal = st.number_input("Investment Amount (₹)", min_value=1.0, value=500000.0, step=10000.0)
+        lump_rate = st.number_input("Expected Annual Return (%)", min_value=1.0, value=12.0, step=0.5)
+        lump_years = st.number_input("Investment Period (Years)", min_value=1, value=10, step=1)
+        
+        if st.button("Calculate Growth", type="primary"):
+            final_amount = calculate_lumpsum_growth(lump_principal, lump_rate, lump_years)
+            total_gains = final_amount - lump_principal
+            
+            st.success(f"**Final Amount: ₹{final_amount:,.2f}**")
+            st.info(f"Total Gains: ₹{total_gains:,.2f}")
+            st.info(f"Return Multiple: {final_amount/lump_principal:.2f}x")
+
+    # Compound Interest Calculator
+    elif calculator_type == "Compound Interest":
+        st.subheader("💰 Compound Interest")
+        principal = st.number_input("Principal Amount (₹)", min_value=1000, value=100000, step=1000)
+        ci_rate = st.number_input("Annual Interest Rate (%)", min_value=1.0, value=8.0, step=0.5)
+        ci_years = st.number_input("Time Period (Years)", min_value=1, value=5, step=1)
+        compound_freq = st.selectbox("Compounding", ["Annually", "Half-yearly", "Quarterly", "Monthly"])
+        
+        if st.button("Calculate Compound Interest", key="ci_calc"):
+            freq_map = {"Annually": 1, "Half-yearly": 2, "Quarterly": 4, "Monthly": 12}
+            n = freq_map[compound_freq]
+            amount = principal * (1 + (ci_rate/100)/n)**(n*ci_years)
+            interest = amount - principal
+            
+            st.markdown(f"""
+            <div class="calculator-result">
+                <strong>💰 Results:</strong><br>
+                Principal: ₹{principal:,.0f}<br>
+                Maturity Amount: ₹{amount:,.0f}<br>
+                Interest Earned: ₹{interest:,.0f}
+            </div>
+            """, unsafe_allow_html=True)
+
+    st.divider()
        
     # Instructions
     st.header("📋 How to Use")
     st.markdown("""
-    **Financial Calculators**: Use the calculators above for quick calculations!
-    
     **Chat with M³**: Ask any personal finance question!
     
     **Example Questions:**
@@ -124,6 +259,12 @@ with st.sidebar:
     - How to create an emergency fund?
     - Should I pay off debt or invest?
     """)
+    
+    st.divider()
+    
+    st.markdown("""
+    **Financial Calculators**: Use the calculators above for quick calculations!
+    """)
 
     st.divider()
     
@@ -131,143 +272,6 @@ with st.sidebar:
     if st.button("🗑️ Clear Chat"):
         st.session_state.messages = []
         st.rerun()
-
-# FINANCIAL CALCULATORS SECTION
-st.header("🧮 Financial Calculators")
-
-# Calculator selection
-calculator_type = st.selectbox(
-    "Choose Calculator:",
-    ["Select Calculator", "CAGR Calculator", "Compound Interest", "EMI Calculator", "FD Calculator",  
-     "Lumpsum Growth", "Retirement Planning", "SIP Calculator"]
-)
-
-if calculator_type == "CAGR Calculator":
-    st.subheader("📈 CAGR Calculator")
-    initial_value = st.number_input("Initial Investment (₹)", min_value=1.0, value=100000.0, step=1000.0)
-    final_value = st.number_input("Final Value (₹)", min_value=1.0, value=200000.0, step=1000.0)
-    years = st.number_input("Investment Period (Years)", min_value=0.1, value=5.0, step=0.1)
-    
-    if st.button("Calculate CAGR", type="primary"):
-        cagr = calculate_cagr(initial_value, final_value, years)
-        total_return = ((final_value - initial_value) / initial_value) * 100
-        
-        st.success(f"**CAGR: {cagr:.2f}% per annum**")
-        st.info(f"Total Return: {total_return:.2f}%")
-        st.info(f"Absolute Gain: ₹{final_value - initial_value:,.2f}")
-
-# EMI Calculator
-elif calculator_type == "EMI Calculator":
-    st.subheader("🏠 EMI Calculator")
-    principal = st.number_input("Loan Amount (₹)", min_value=1.0, value=1000000.0, step=10000.0)
-    annual_rate = st.number_input("Interest Rate (% per annum)", min_value=0.1, value=8.5, step=0.1)
-    tenure_years = st.number_input("Loan Tenure (Years)", min_value=1, value=20, step=1)
-    
-    if st.button("Calculate EMI", type="primary"):
-        tenure_months = tenure_years * 12
-        emi = calculate_emi(principal, annual_rate, tenure_months)
-        total_payment = emi * tenure_months
-        total_interest = total_payment - principal
-        
-        st.success(f"**Monthly EMI: ₹{emi:,.2f}**")
-        st.info(f"Total Payment: ₹{total_payment:,.2f}")
-        st.info(f"Total Interest: ₹{total_interest:,.2f}")
-        st.info(f"Principal: ₹{principal:,.2f}")
-
-# SIP Calculator
-elif calculator_type == "SIP Calculator":
-    st.subheader("📊 SIP Calculator")
-    monthly_sip = st.number_input("Monthly SIP (₹)", min_value=1.0, value=10000.0, step=500.0)
-    expected_return = st.number_input("Expected Annual Return (%)", min_value=1.0, value=12.0, step=0.5)
-    investment_years = st.number_input("Investment Period (Years)", min_value=1, value=10, step=1)
-    
-    if st.button("Calculate SIP Maturity", type="primary"):
-        maturity_amount, total_invested = calculate_sip_maturity(monthly_sip, expected_return, investment_years)
-        total_gains = maturity_amount - total_invested
-        
-        st.success(f"**Maturity Amount: ₹{maturity_amount:,.2f}**")
-        st.info(f"Total Invested: ₹{total_invested:,.2f}")
-        st.info(f"Total Gains: ₹{total_gains:,.2f}")
-        st.info(f"Return Multiple: {maturity_amount/total_invested:.2f}x")
-
-# Fixed Deposit Calculator
-elif calculator_type == "FD Calculator":
-    st.subheader("🏦 FD Calculator")
-    fd_principal = st.number_input("Principal Amount (₹)", min_value=1.0, value=100000.0, step=1000.0)
-    fd_rate = st.number_input("Interest Rate (% per annum)", min_value=0.1, value=6.5, step=0.1)
-    fd_years = st.number_input("Investment Period (Years)", min_value=0.1, value=5.0, step=0.1)
-    compound_freq = st.selectbox("Compounding Frequency", [1, 2, 4, 12], index=2, 
-                               format_func=lambda x: {1: "Annually", 2: "Half-yearly", 4: "Quarterly", 12: "Monthly"}[x])
-    
-    if st.button("Calculate FD Maturity", type="primary"):
-        maturity_amount = calculate_fd_maturity(fd_principal, fd_rate, fd_years, compound_freq)
-        interest_earned = maturity_amount - fd_principal
-        
-        st.success(f"**Maturity Amount: ₹{maturity_amount:,.2f}**")
-        st.info(f"Interest Earned: ₹{interest_earned:,.2f}")
-        st.info(f"Effective Return: {(interest_earned/fd_principal)*100:.2f}%")
-
-# Retirement Planning Calculator
-elif calculator_type == "Retirement Planning":
-    st.subheader("🏖️ Retirement Planning")
-    current_age = st.number_input("Current Age", min_value=18, max_value=60, value=30)
-    retirement_age = st.number_input("Retirement Age", min_value=current_age+1, max_value=70, value=60)
-    monthly_expenses = st.number_input("Current Monthly Expenses (₹)", min_value=1000.0, value=50000.0, step=1000.0)
-    inflation_rate = st.number_input("Expected Inflation Rate (%)", min_value=1.0, value=6.0, step=0.5)
-    
-    if st.button("Calculate Retirement Corpus", type="primary"):
-        required_corpus = calculate_retirement_corpus(current_age, retirement_age, monthly_expenses, inflation_rate)
-        years_to_retirement = retirement_age - current_age
-        
-        # Calculate required monthly SIP
-        if years_to_retirement > 0:
-            # Assuming 12% annual return
-            monthly_sip_needed = required_corpus / (((1.01**((years_to_retirement)*12) - 1) / 0.01) * 1.01)
-            
-            st.success(f"**Required Retirement Corpus: ₹{required_corpus:,.0f}**")
-            st.info(f"Years to Retirement: {years_to_retirement}")
-            st.info(f"Monthly SIP needed (12% return): ₹{monthly_sip_needed:,.0f}")
-            st.warning("💡 Start investing early to reduce monthly burden!")
-
-# Lumpsum Growth Calculator
-elif calculator_type == "Lumpsum Growth":
-    st.subheader("💎 Lumpsum Investment")
-    lump_principal = st.number_input("Investment Amount (₹)", min_value=1.0, value=500000.0, step=10000.0)
-    lump_rate = st.number_input("Expected Annual Return (%)", min_value=1.0, value=12.0, step=0.5)
-    lump_years = st.number_input("Investment Period (Years)", min_value=1, value=10, step=1)
-    
-    if st.button("Calculate Growth", type="primary"):
-        final_amount = calculate_lumpsum_growth(lump_principal, lump_rate, lump_years)
-        total_gains = final_amount - lump_principal
-        
-        st.success(f"**Final Amount: ₹{final_amount:,.2f}**")
-        st.info(f"Total Gains: ₹{total_gains:,.2f}")
-        st.info(f"Return Multiple: {final_amount/lump_principal:.2f}x")
-
-# Compound Interest Calculator
-elif calculator_type == "Compound Interest":
-    st.subheader("💰 Compound Interest")
-    principal = st.number_input("Principal Amount (₹)", min_value=1000, value=100000, step=1000)
-    ci_rate = st.number_input("Annual Interest Rate (%)", min_value=1.0, value=8.0, step=0.5)
-    ci_years = st.number_input("Time Period (Years)", min_value=1, value=5, step=1)
-    compound_freq = st.selectbox("Compounding", ["Annually", "Half-yearly", "Quarterly", "Monthly"])
-    
-    if st.button("Calculate Compound Interest", key="ci_calc"):
-        freq_map = {"Annually": 1, "Half-yearly": 2, "Quarterly": 4, "Monthly": 12}
-        n = freq_map[compound_freq]
-        amount = principal * (1 + (ci_rate/100)/n)**(n*ci_years)
-        interest = amount - principal
-        
-        st.markdown(f"""
-        <div class="calculator-result">
-            <strong>💰 Results:</strong><br>
-            Principal: ₹{principal:,.0f}<br>
-            Maturity Amount: ₹{amount:,.0f}<br>
-            Interest Earned: ₹{interest:,.0f}
-        </div>
-        """, unsafe_allow_html=True)
-
-st.divider()
 
 # Main header
 st.markdown("""
