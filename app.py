@@ -89,8 +89,6 @@ def calculate_lumpsum_growth(principal, rate, years):
 
 # Sidebar for API key and settings
 with st.sidebar:
-    st.header("💰 M³ - Your Personal Finance Guide")
-    
     # API Key input
     if "GEMINI_API_KEY" in st.secrets:
         genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
@@ -128,9 +126,7 @@ with st.sidebar:
     st.markdown("""
     **Financial Calculators**: Use the calculators below for quick calculations!
     """)
-    
-    st.divider()
-    
+        
     # FINANCIAL CALCULATORS SECTION - MOVED TO SIDEBAR
     st.header("🧮 Financial Calculators")
 
