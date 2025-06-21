@@ -103,8 +103,6 @@ with st.sidebar:
             genai.configure(api_key=api_key)
             st.session_state.api_key_set = True
     
-    st.divider()
-    
     # Model settings
     model_name = "gemini-1.5-flash"
     temperature = 0.7
