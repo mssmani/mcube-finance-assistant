@@ -212,7 +212,7 @@ elif calculator_type == "Compound Interest":
         </div>
         """, unsafe_allow_html=True)
     
-   st.divider()
+    st.divider()
     
     # Model settings
     model_name = "gemini-1.5-flash"
